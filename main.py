@@ -29,7 +29,13 @@ def main():
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as handle:
         handle.write(reply)
+    # Verify the round-trip: what landed on disk must be exactly the reply.
+    with open("/output/entry.txt", encoding="utf-8") as handle:
+        written = handle.read()
+    if written != reply:
+        raise ValueError("entry.txt does not match the reply")
     print(f"wrote {len(reply)} chars to /output/entry.txt")
+    print(reply)
 
 
 if __name__ == "__main__":
